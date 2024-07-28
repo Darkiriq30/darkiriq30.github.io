@@ -1,23 +1,154 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Compatibilité Atelier GTAIER</title>
-    </head>
-    <body>
-        <h1>My First Heading</h1>
-        <p>My first paragraph.</p>
-    </body>
+<head>
+    <title>Questionnaire Oui/Non</title>
+    <style>
+        .question, .result, .recap {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="pa" class="question">
+        <p>Comptez-vous faire la <b>pièce annuelle</b> ?</p>
+        <button onclick="nextQuestion(1, 'pa', 'po1')">Oui</button>
+        <button onclick="nextQuestion(0, 'pa', 'po1')">Non</button>
+    </div>
 
+    <div id="po1" class="question">
+        <p>Comptez-vous faire la <b>première pièce originale</b> ?</p>
+        <button onclick="nextQuestion(1, 'po1', 'po2')">Oui</button>
+        <button onclick="nextQuestion(0, 'po1', 'po2')">Non</button>
+    </div>
+    
+    <div id="po2" class="question">
+        <p>Comptez-vous faire la <b>deuxième pièce originale</b> ?</p>
+        <button onclick="nextQuestion(1, 'po2', 'cab1')">Oui</button>
+        <button onclick="nextQuestion(0, 'po2', 'cab1')">Non</button>
+    </div>    
 
+    <div id="cab1" class="question">
+        <p>Comptez-vous faire le <b>premier cabaret</b> ?</p>
+        <button onclick="nextQuestion(1, 'cab1', 'cab2')">Oui</button>
+        <button onclick="nextQuestion(0, 'cab1', 'cab2')">Non</button>
+    </div>
 
-<div id="wrapper">
-    <label for="yes_no_radio">Comptez-vous faire une pièce annuelle ?</label>
-  <p>
-  <input type="radio" name="yes_no" checked>Oui</input>
-  </p>
-  <p>
-  <input type="radio" name="yes_no">Non</input>
-  </p>
-</div>  
+    <div id="cab2" class="question">
+        <p>Comptez-vous faire le <b>deuxième cabaret</b> ?</p>
+        <button onclick="nextQuestion(1, 'cab2', 'cab3')">Oui</button>
+        <button onclick="nextQuestion(0, 'cab2', 'cab3')">Non</button>
+    </div>
 
+    <div id="cab3" class="question">
+        <p>Comptez-vous faire le <b>troisième cabaret</b> ?</p>
+        <button onclick="nextQuestion(1, 'cab3', 'sum')">Oui</button>
+        <button onclick="nextQuestion(0, 'cab3', 'sum')">Non</button>
+    </div>
+
+    <div id="sum" class="question">
+        <p>Voici un récapitulatif des ateliers que vous désirez faire :</p>
+        <button onclick="showRecap()">Montrez-moi</button>
+    </div>       
+   
+    <div id="pa_recap" class="recap">
+        <p>- la pièce annuelle</p>
+    </div>
+  
+    <div id="po1_recap" class="recap">
+        <p>- la première pièce original</p>
+    </div>
+
+    <div id="po2_recap" class="recap">
+        <p>- la deuxième pièce original</p>
+    </div>
+    
+    <div id="cab1_recap" class="recap">
+        <p>- le premier cabaret</p>
+    </div>
+    
+    <div id="cab2_recap" class="recap">
+        <p>- le deuxième cabaret</p>
+    </div>
+    
+    <div id="cab3_recap" class="recap">
+        <p>- le troisième cabaret</p>
+    </div>
+    
+    <div id="confirm_recap" class="recap">
+        <button onclick="showResult()">Tout est bon.</button>
+        <button onclick="restart()">Je me suis trompé.e; je resélectionne mes ateliers.</button>
+    </div>
+		
+    <div id="good_config" class="result">
+        <p>Vous pouvez choisir sans problèmes ces ateliers ! Voici le lien pour adhérer à l'association :</p>
+    </div>
+    
+    <div id="bad_config1" class="result">
+        <p>Les ateliers que vous avez choisis font qu'à un certain moment, vous effectuez trois ateliers avec un metteur en scène professionnel en même temps.</p>
+    </div>
+    
+    <div id="bad_config2" class="result">
+        <p>Les ateliers que vous avez choisis font qu'à un certain moment, vous effectuez trois ateliers avec un metteur en scène professionnel en même temps.</p>
+    </div>
+    
+    <div id="bad_config3" class="result">
+        <p>Les ateliers que vous avez choisis font qu'à un certain moment, vous effectuez trois ateliers avec un metteur en scène professionnel en même temps.</p>
+    </div>
+
+    <div id="bad_config4" class="result">
+        <p>Les ateliers que vous avez choisis font qu'à un certain moment, vous effectuez trois ateliers avec un metteur en scène professionnel en même temps.</p>
+    </div>
+
+    <script>
+    	var answers = {
+            pa: 0,
+            po1: 0,
+            po2: 0,
+            cab1: 0,
+            cab2: 0,
+            cab3: 0
+        };
+
+        function nextQuestion(answer, currentId, showId) {
+            answers[currentId] = answer;
+            document.getElementById(currentId).style.display = 'none';
+            document.getElementById(showId).style.display = 'block';
+            if (prevId === 'cab3'){
+            	toSum();
+            }
+        }
+        
+        function showRecap(){            
+            for (var key in answers) {
+                var recapId = key + '_recap';
+                if (answers[key] === 1) {
+                    document.getElementById(recapId).style.display = 'block';
+                } else {
+                    document.getElementById(recapId).style.display = 'none';
+                }
+            }
+            document.getElementById('sum').style.display = 'block';
+            document.getElementById('confirm_recap').style.display = 'block';
+        }
+        
+        function showResult(resultId) {
+            document.getElementById('confirm_recap').style.display = 'none';
+            
+            document.getElementById('good_config').style.display = 'block';
+        }
+        
+        function restart(){
+        	for (var key in answers) {
+                var recapId = key + '_recap';
+                document.getElementById(recapId).style.display = 'none';
+            }
+            document.getElementById('sum').style.display = 'none';
+            document.getElementById('confirm_recap').style.display = 'none';
+           	document.getElementById('pa').style.display = 'block';
+        }
+
+        // Initial display of the first question
+        document.getElementById('pa').style.display = 'block';
+    </script>
+</body>
 </html>
